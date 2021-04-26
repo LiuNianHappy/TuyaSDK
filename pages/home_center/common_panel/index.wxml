@@ -1,0 +1,74 @@
+<!--miniprogram/pages/home_center/common_panel/index.js.wxml-->
+<wxs src="./index.wxs" module="utils" />
+
+<!-- <image class="common-panel-backgroud" src="{{forest}}" /> -->
+<view class="common-panel-backgroud">
+  <image class="wave" src="/image/90909090.jpg"></image>
+</view>
+<navbar device_name="{{device_name}}" bind:jumpTodeviceEditPage="jumpTodeviceEditPage" />
+
+<view class="common-panel-header">
+  <image class="{{titleItem.value?'bg-rotate':'bg-rotate-normal'}}" src="/image/bg-steps.png"></image>
+  <view class="common-panel-header-block">
+    <view class="common-panel-header-dpName">开关状态</view>
+    <view class="{{titleItem.value?'common-panel-header-dpValue':'common-panel-header-dpValue-normal'}}">{{titleItem.value?'开机':'关机'}}</view>
+  </view>
+</view>
+
+<!-- <view class="tui-flex">
+    <view class="tui-cube-box" bindtap='log'>
+      <view class="tui-cube tui-cube-1">涂❤鸦</view>
+      <view class="tui-cube tui-cube-2">{{version}}</view>
+      <view class="tui-cube tui-cube-3">涂❤鸦</view>
+      <view class="tui-cube tui-cube-5">涂❤鸦</view>
+      <view class="tui-cube tui-cube-4">{{version}}</view>
+      <view class="tui-cube tui-cube-6">{{version}}</view>
+    </view>
+</view> -->
+
+<block wx:if="{{isRoDpListShow}}">
+  <view class="statuslist">
+    <block wx:for="{{roDpList}}" wx:key="{{item.code}}" wx:for-item="item" wx:for-index='idx'>
+      <view class="{{utils.countDpItem(roDpListLength,idx)}}">
+        <view class="roDpItem-dpName">{{item.code}}</view>
+        <view class="roDpItem-status">{{item.value}}</view>
+      </view>
+    </block>
+  </view>
+</block>
+
+<view class="scroll-view">
+  <block wx:if="{{isRwDpListShow}}">
+    <block wx:for="{{rwDpList}}" wx:key="{{item.code}}" wx:for-item="item">
+      <block wx:if="{{item.type === 'Boolean'}}">
+        <Boolean model:isChecked="{{item.value}}" dpCode="{{item.code}}" dpName="{{item.name}}" bind:sendDp="sendDp" />
+      </block>
+      <block wx:if="{{item.type === 'Integer'}}">
+        <Integer model:value="{{item.value}}" values="{{item.values}}" dpCode="{{item.code}}" dpName="{{item.name}}"
+          bind:sendDp="sendDp" />
+      </block>
+      <block wx:if="{{item.type === 'Enum'}}">
+        <Enum model:value="{{item.value}}" values="{{item.values}}" dpCode="{{item.code}}" dpName="{{item.name}}"
+          bind:sendDp="sendDp" />
+      </block>
+    </block>
+  </block>
+  <view class="integer-container">
+    <view class="integer-name">电量</view>
+    <view class="cu-progress radius striped active">
+      <view class="bg-olive" style="width:{{left?left:'0%'}};">{{left}}</view>
+    </view>
+    <view class="integer-name">电压</view>
+    <view class="cu-progress radius striped active">
+      <view class="bg-red" style="width:100%;">{{voltage}}V</view>
+    </view>
+    <view class="integer-name">电流</view>
+    <view class="cu-progress radius striped active">
+      <view class="bg-cyan" style="width:100%;">{{10}}A</view>
+    </view>
+    <view class="integer-name">当前功率</view>
+    <view class="cu-progress radius striped active">
+      <view class="bg-orange" style="width:100%;">{{2200}}W</view>
+    </view>
+  </view>
+</view>
